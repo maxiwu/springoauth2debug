@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: zuul-gateway
+server:
+  port: 8762
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+zuul:
+  routes:
+     gallary:
+       path: /gallary/**
+       serviceId: gallery-service
+#    uaa:
+#      path: /uaa/**
+#      sensitiveHeaders: "*"
+#      serviceId: auth-service
+#    order:
+#      path: /accounts/**
+#      sensitiveHeaders: "*"
+#      serviceId: account-service
+#    user:
+#      path: /user/**
+#      url: http://localhost:8081/user
+  add-proxy-headers: true
+
+#OAuth server should be using 8081?
+security:
+  oauth2:
+    client:
+      clientId: accountservice
+      clientSecret: 123456
+      access-token-uri: http://localhost:8081/oauth/token
+      user-authorization-uri: http://localhost:8081/oauth/authorize
+    #   access-token-uri: http://localhost:${server.port}/uaa/oauth/token
+    #   user-authorization-uri: http://localhost:${server.port}/uaa/oauth/authorize      
+    resource:
+    # user-info-uri: http://localhost:${server.port}/uaa/user
+      user-info-uri: http://localhost:8081/user
+      prefer-token-info: false
+      
+#      security:
+#  oauth2:
+#    client:
+#      clientId: 233668646673605
+#      clientSecret: 33b17e044ee6a4fa383f46ec6e28ea1d
+#      accessTokenUri: https://graph.facebook.com/oauth/access_token
+#      userAuthorizationUri: https://www.facebook.com/dialog/oauth
+#      tokenName: oauth_token
+#      authenticationScheme: query
+#      clientAuthenticationScheme: form
+#    resource:
+#      userInfoUri: https://graph.facebook.com/me
