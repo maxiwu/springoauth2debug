@@ -8,12 +8,14 @@ import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth
 //import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 
 
 @SpringBootApplication
 @EnableEurekaClient 		// It acts as a eureka client
 @EnableZuulProxy		// Enable Zuul
 @EnableOAuth2Sso        ///enable SSO, use spring security
+//@EnableOAuth2Client
 //@EnableResourceServer   for mobile access, mobile needs to directly provide the access token
 //@EnableAutoConfiguration
 public class ZuulgatewayApplication {

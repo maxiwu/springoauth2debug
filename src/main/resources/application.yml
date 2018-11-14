@@ -15,6 +15,47 @@ zuul:
      gallary:
        path: /gallary/**
        serviceId: gallery-service
+     image:
+       path: /images/**
+       serviceId: image-service
+       
+#OKTA
+#security:
+#  oauth2:
+#    client:
+#      clientId: 0oahavcv5dX2PQxni0h7
+#      clientSecret: gP3mB5GqNNrGXuJgv82NthE8sxAGZBl_zLWkdKE6
+#      access-token-uri: https://dev-478432.oktapreview.com/oauth2/default/v1/token
+#      user-authorization-uri: https://dev-478432.oktapreview.com/oauth2/default/v1/authorize    
+#    resource:    
+#      user-info-uri: https://dev-478432.oktapreview.com/oauth2/default/v1/userinfo
+#      prefer-token-info: false
+
+#Azure B2C
+security:
+  oauth2:
+    client:
+      clientId: 111ddde5-38af-4c31-a540-f204d64ccc5e
+      clientSecret: /8D^F792t2r/%3T`89XXGPXE
+      access-token-uri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/oauth2/v2.0/token
+      user-authorization-uri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/oauth2/v2.0/authorize
+      scope: read
+#      scope: read,write    
+    resource:    
+      user-info-uri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/oauth2/v2.0/userinfo
+      #JWT, isuser is also here
+      jwk-set-uri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/discovery/v2.0/keys
+      prefer-token-info: false
+      
+#spring.security.oauth2.client.provider.azure-oauth-provider.authorization-uri=https://login.microsoftonline.com/{your-tenant-id}/oauth2/authorize
+#spring.security.oauth2.client.provider.azure-oauth-provider.token-uri=https://login.microsoftonline.com/{your-tenant-id}/oauth2/token
+#spring.security.oauth2.client.provider.azure-oauth-provider.user-info-uri=https://login.microsoftonline.com/{your-tenant-id}/openid/userinfo
+#spring.security.oauth2.client.provider.azure-oauth-provider.jwk-set-uri=https://login.microsoftonline.com/{your-tenant-id}/discovery/keys
+
+#tenant id c50b6a84-4651-40db-935a-837ed5a67a95
+#azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
+#azure.activedirectory.active-directory-groups=group1, group2
+
 #    uaa:
 #      path: /uaa/**
 #      sensitiveHeaders: "*"
@@ -26,22 +67,19 @@ zuul:
 #    user:
 #      path: /user/**
 #      url: http://localhost:8081/user
-  add-proxy-headers: true
+  # add-proxy-headers: true
 
 #OAuth server should be using 8081?
-security:
-  oauth2:
-    client:
-      clientId: accountservice
-      clientSecret: 123456
-      access-token-uri: http://localhost:8081/oauth/token
-      user-authorization-uri: http://localhost:8081/oauth/authorize
-    #   access-token-uri: http://localhost:${server.port}/uaa/oauth/token
-    #   user-authorization-uri: http://localhost:${server.port}/uaa/oauth/authorize      
-    resource:
-    # user-info-uri: http://localhost:${server.port}/uaa/user
-      user-info-uri: http://localhost:8081/user
-      prefer-token-info: false
+#security:
+#  oauth2:
+#    client:
+#      clientId: accountservice
+#      clientSecret: 123456
+#      access-token-uri: http://localhost:8081/oauth/token
+#      user-authorization-uri: http://localhost:8081/oauth/authorize    
+#    resource:    
+#      user-info-uri: http://localhost:8081/user
+#      prefer-token-info: false
       
 #      security:
 #  oauth2:
