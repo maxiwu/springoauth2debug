@@ -1,0 +1,46 @@
+#spring.security.oauth2.client.provider.azure-oauth-provider.authorization-uri=https://login.microsoftonline.com/{your-tenant-id}/oauth2/authorize
+#spring.security.oauth2.client.provider.azure-oauth-provider.token-uri=https://login.microsoftonline.com/{your-tenant-id}/oauth2/token
+#spring.security.oauth2.client.provider.azure-oauth-provider.user-info-uri=https://login.microsoftonline.com/{your-tenant-id}/openid/userinfo
+#spring.security.oauth2.client.provider.azure-oauth-provider.jwk-set-uri=https://login.microsoftonline.com/{your-tenant-id}/discovery/keys
+
+#tenant id c50b6a84-4651-40db-935a-837ed5a67a95
+#azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
+#azure.activedirectory.active-directory-groups=group1, group2
+
+#    uaa:
+#      path: /uaa/**
+#      sensitiveHeaders: "*"
+#      serviceId: auth-service
+#    order:
+#      path: /accounts/**
+#      sensitiveHeaders: "*"
+#      serviceId: account-service
+#    user:
+#      path: /user/**
+#      url: http://localhost:8081/user
+  # add-proxy-headers: true
+
+#OAuth server should be using 8081?
+#security:
+#  oauth2:
+#    client:
+#      clientId: accountservice
+#      clientSecret: 123456
+#      access-token-uri: http://localhost:8081/oauth/token
+#      user-authorization-uri: http://localhost:8081/oauth/authorize    
+#    resource:    
+#      user-info-uri: http://localhost:8081/user
+#      prefer-token-info: false
+      
+#      security:
+#  oauth2:
+#    client:
+#      clientId: 233668646673605
+#      clientSecret: 33b17e044ee6a4fa383f46ec6e28ea1d
+#      accessTokenUri: https://graph.facebook.com/oauth/access_token
+#      userAuthorizationUri: https://www.facebook.com/dialog/oauth
+#      tokenName: oauth_token
+#      authenticationScheme: query
+#      clientAuthenticationScheme: form
+#    resource:
+#      userInfoUri: https://graph.facebook.com/me

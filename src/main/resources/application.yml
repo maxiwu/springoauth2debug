@@ -1,8 +1,9 @@
 spring:
   application:
-    name: zuul-gateway
+    name: zuul-gateway    
 server:
   port: 8762
+#  context-path: /client
 
 
 eureka:
@@ -10,14 +11,24 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-zuul:
+#zuul:
+#  routes:
+#     gallary:
+#       path: /res/gallary/**
+#       serviceId: gallery-service
+#     image:
+#       path: /res/images/**
+#       serviceId: image-service
+spring.cloud.gateway:
   routes:
-     gallary:
-       path: /gallary/**
-       serviceId: gallery-service
-     image:
-       path: /images/**
-       serviceId: image-service
+  - id: test
+    uri: lb://image-service
+    predicates:
+    - Path=/res/images/**
+
+logging:
+  level:
+    org.springframework.security.web.FilterChainProxy: DEBUG
        
 #OKTA
 #security:
@@ -33,63 +44,37 @@ zuul:
 
 #Azure B2C
 security:
+  basic:
+    enabled: false
+#    ignored: /welcome,/favicon.ico,/index.html,/signup,/assets/**,/js/**,/css/**,/webjars/**
+#    sessions: ALWAYS
   oauth2:
+    sso:
+      loginPath: /login
     client:
+#    "issuer": "https://umediax.b2clogin.com/c50b6a84-4651-40db-935a-837ed5a67a95/v2.0/",  ???    
       clientId: 111ddde5-38af-4c31-a540-f204d64ccc5e
       clientSecret: /8D^F792t2r/%3T`89XXGPXE
+#      ?p=b2c_1_signinup",
       access-token-uri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/oauth2/v2.0/token
+#       https://umediax.b2clogin.com/umediax.onmicrosoft.com/oauth2/v2.0/authorize?p=b2c_1_signinup
       user-authorization-uri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/oauth2/v2.0/authorize
-      scope: read
-#      scope: read,write    
-    resource:    
-      user-info-uri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/oauth2/v2.0/userinfo
-      #JWT, isuser is also here
-      jwk-set-uri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/discovery/v2.0/keys
-      prefer-token-info: false
-      
-#spring.security.oauth2.client.provider.azure-oauth-provider.authorization-uri=https://login.microsoftonline.com/{your-tenant-id}/oauth2/authorize
-#spring.security.oauth2.client.provider.azure-oauth-provider.token-uri=https://login.microsoftonline.com/{your-tenant-id}/oauth2/token
-#spring.security.oauth2.client.provider.azure-oauth-provider.user-info-uri=https://login.microsoftonline.com/{your-tenant-id}/openid/userinfo
-#spring.security.oauth2.client.provider.azure-oauth-provider.jwk-set-uri=https://login.microsoftonline.com/{your-tenant-id}/discovery/keys
-
-#tenant id c50b6a84-4651-40db-935a-837ed5a67a95
-#azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
-#azure.activedirectory.active-directory-groups=group1, group2
-
-#    uaa:
-#      path: /uaa/**
-#      sensitiveHeaders: "*"
-#      serviceId: auth-service
-#    order:
-#      path: /accounts/**
-#      sensitiveHeaders: "*"
-#      serviceId: account-service
-#    user:
-#      path: /user/**
-#      url: http://localhost:8081/user
-  # add-proxy-headers: true
-
-#OAuth server should be using 8081?
-#security:
-#  oauth2:
-#    client:
-#      clientId: accountservice
-#      clientSecret: 123456
-#      access-token-uri: http://localhost:8081/oauth/token
-#      user-authorization-uri: http://localhost:8081/oauth/authorize    
-#    resource:    
-#      user-info-uri: http://localhost:8081/user
-#      prefer-token-info: false
-      
-#      security:
-#  oauth2:
-#    client:
-#      clientId: 233668646673605
-#      clientSecret: 33b17e044ee6a4fa383f46ec6e28ea1d
-#      accessTokenUri: https://graph.facebook.com/oauth/access_token
-#      userAuthorizationUri: https://www.facebook.com/dialog/oauth
-#      tokenName: oauth_token
-#      authenticationScheme: query
-#      clientAuthenticationScheme: form
-#    resource:
-#      userInfoUri: https://graph.facebook.com/me
+      scope: https://umediax.onmicrosoft.com/signinup/user_impersonation+openid+offline_access
+#      scope: openid
+#      authorizedGrantTypes: client_credentials
+#      grant-type: USER
+      auto-approve-scopes: true
+      authorizedGrantTypes: authorization_code
+#      auto-approve-scopes: '.*'
+      clientAuthenticationScheme: form   
+    resource:   
+      issuer: https://umediax.b2clogin.com/c50b6a84-4651-40db-935a-837ed5a67a95/v2.0/ 
+#      user-info-uri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/oauth2/v2.0/userinfo
+      jwk:
+        key-set-uri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/discovery/v2.0/keys
+      prefer-token-info: true
+#      jwt:
+#       #keyValue or key-value?
+#       key-value: tVKUtcx_n9rt5afY_2WFNvU6PlFMggCatsZ3l4RjKxH0jgdLq6CScb0P3ZGXYbPzXvmmLiWZizpb-h0qup5jznOvOr-Dhw9908584BSgC83YacjWNqEK3urxhyE2jWjwRm2N95WGgb5mzE5XmZIvkvyXnn7X8dvgFPF5QwIngGsDG8LyHuJWlaDhr_EPLMW4wHvH0zZCuRMARIJmmqiMy3VD4ftq4nS5s8vJL0pVSrkuNojtokp84AtkADCDU_BUhrc2sIgfnvZ03koCQRoZmWiHu86SuJZYkDFstVTVSR0hiXudFlfQ2rOhPlpObmku68lXw-7V-P7jwrQRFfQVXw
+#       key-set-uri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/discovery/v2.0/keys
+     
