@@ -1,9 +1,15 @@
 spring:
   application:
     name: zuul-gateway    
+  thymeleaf:
+    cache: false
 server:
+  servlet:    
+    context-path: /ui
   port: 8762
-#  context-path: /client
+  session:
+    cookie:
+      name: UISESSION  
 
 
 eureka:
@@ -11,20 +17,14 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-#zuul:
-#  routes:
-#     gallary:
-#       path: /res/gallary/**
-#       serviceId: gallery-service
-#     image:
-#       path: /res/images/**
-#       serviceId: image-service
-spring.cloud.gateway:
-  routes:
-  - id: test
-    uri: lb://image-service
-    predicates:
-    - Path=/res/images/**
+zuul:
+ routes:
+    gallary:
+      path: /res/gallary/**
+      serviceId: gallery-service
+    image:
+      path: /res/images/**
+      serviceId: image-service
 
 logging:
   level:
@@ -49,27 +49,31 @@ security:
 #    ignored: /welcome,/favicon.ico,/index.html,/signup,/assets/**,/js/**,/css/**,/webjars/**
 #    sessions: ALWAYS
   oauth2:
-    sso:
-      loginPath: /login
+    # sso:
+    #   loginPath: /login
     client:
 #    "issuer": "https://umediax.b2clogin.com/c50b6a84-4651-40db-935a-837ed5a67a95/v2.0/",  ???    
       clientId: 111ddde5-38af-4c31-a540-f204d64ccc5e
-      clientSecret: /8D^F792t2r/%3T`89XXGPXE
+      clientSecret: 
 #      ?p=b2c_1_signinup",
+      accessTokenUri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/oauth2/v2.0/token
       access-token-uri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/oauth2/v2.0/token
 #       https://umediax.b2clogin.com/umediax.onmicrosoft.com/oauth2/v2.0/authorize?p=b2c_1_signinup
+      userAuthorizationUri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/oauth2/v2.0/authorize
       user-authorization-uri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/oauth2/v2.0/authorize
+      
       scope: https://umediax.onmicrosoft.com/signinup/user_impersonation+openid+offline_access
 #      scope: openid
 #      authorizedGrantTypes: client_credentials
 #      grant-type: USER
-      auto-approve-scopes: true
-      authorizedGrantTypes: authorization_code
+      # auto-approve-scopes: true
+      # authorizedGrantTypes: authorization_code
 #      auto-approve-scopes: '.*'
-      clientAuthenticationScheme: form   
+      # clientAuthenticationScheme: form   
     resource:   
-      issuer: https://umediax.b2clogin.com/c50b6a84-4651-40db-935a-837ed5a67a95/v2.0/ 
+      # issuer: https://umediax.b2clogin.com/c50b6a84-4651-40db-935a-837ed5a67a95/v2.0/ 
 #      user-info-uri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/oauth2/v2.0/userinfo
+      userInfoUri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/oauth2/v2.0/userinfo
       jwk:
         key-set-uri: https://login.microsoftonline.com/te/umediax.onmicrosoft.com/b2c_1_signinup/discovery/v2.0/keys
       prefer-token-info: true

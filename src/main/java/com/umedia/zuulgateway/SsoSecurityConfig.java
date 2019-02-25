@@ -11,12 +11,23 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableOAuth2Sso
 public class SsoSecurityConfig extends WebSecurityConfigurerAdapter {// OAuth2SsoConfigurerAdapter
 																		// {
+	// @Override
+	// public void configure(HttpSecurity http) throws Exception {
+	// 	http.csrf().disable().cors().disable().logout().and().antMatcher("/**").authorizeRequests()
+	// 			.antMatchers("/index.html", "/", "/login").permitAll().anyRequest().authenticated().and()
+	// 			.csrf().disable();
+	// }
+
+	//https://www.baeldung.com/sso-spring-security-oauth2
 	@Override
-	public void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().cors().disable().logout().and().antMatcher("/**").authorizeRequests()
-				.antMatchers("/index.html", "/", "/login").permitAll().anyRequest().authenticated().and()
-				.csrf().disable();
-	}
+    public void configure(HttpSecurity http) throws Exception {
+        http.antMatcher("/**")
+          .authorizeRequests()
+          .antMatchers("/", "/login**")
+          .permitAll()
+          .anyRequest()
+          .authenticated();
+    }
 }
 
 
